@@ -7,6 +7,7 @@ const StudentForm = () => {
   const [name, setName] = useState("");
   const [marks, setMarks] = useState({ english: "", maths: "", physics: "", chemistry: "" });
 
+<<<<<<< HEAD
   const fetchStudents = () => {
     axios.get("http://localhost:5000/students")
       .then(response => {
@@ -21,11 +22,21 @@ const StudentForm = () => {
   }, []);
 
   const handleSubmit = async () => {
+=======
+  useEffect(() => {
+    axios.get("http://localhost:5000/students")
+      .then(response => setStudents(response.data))
+      .catch(error => console.error("Error fetching students:", error.message));
+  }, []);
+
+  const handleSubmit = () => {
+>>>>>>> bfa7ca8 (.)
     if (!name.trim() || Object.values(marks).some(mark => mark === "")) {
       alert("Please fill all fields");
       return;
     }
 
+<<<<<<< HEAD
     try {
       await axios.post("http://localhost:5000/students", { name, ...marks });
       console.log("Student added successfully");
@@ -37,6 +48,15 @@ const StudentForm = () => {
     } catch (error) {
       console.error("Error adding student:", error.response ? error.response.data : error.message);
     }
+=======
+    axios.post("http://localhost:5000/students", { name, ...marks })
+      .then(response => {
+        setStudents([...students, { ...response.data, id: response.data.id }]);
+        setName("");
+        setMarks({ english: "", maths: "", physics: "", chemistry: "" });
+      })
+      .catch(error => console.error("Error adding student:", error.message));
+>>>>>>> bfa7ca8 (.)
   };
 
   return (
