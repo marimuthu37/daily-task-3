@@ -46,5 +46,30 @@ app.post("/students", (req, res) => {
   });
 });
 
+app.put("/students/:id", (req, res) => {
+    const { id } = req.params;
+    const { name, english, maths, physics, chemistry } = req.body;
+  
+    if (!name || !english || !maths || !physics || !chemistry) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+  
+    const sql = "UPDATE students SET name=?, english=?, maths=?, physics=?, chemistry=? WHERE id=?";
+    db.query(sql, [name, english, maths, physics, chemistry, id], (err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ message: "Student updated successfully" });
+    });
+  });
+  
+  app.delete("/students/:id", (req, res) => {
+    const { id } = req.params;
+  
+    db.query("DELETE FROM students WHERE id=?", [id], (err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ message: "Student deleted successfully" });
+    });
+  });
+  
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
